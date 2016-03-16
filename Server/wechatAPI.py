@@ -41,7 +41,7 @@ class WechatAPI():
                   'secret':'577a346208002399faf26896e6462f12'}
         url = "https://api.weixin.qq.com/cgi-bin/token"
 
-        if self.token != '':
+        if self.token == '':
             resp = self.get(url,params)
             self.token = resp['access_token']
             self.expires = resp['expires_in']

@@ -7,21 +7,22 @@ app = Flask(__name__)
 
 @app.route('/', methods = ['GET', 'POST'] )
 def wechat():
-    resp = ''
+    resp = make_response('')
     api = WechatAPI()
     try:
         if request.method == 'GET':
             # 用于接入微信
-            resp = api.wechat_auth(request)
+            resp = make_response(api.wechat_auth(request))
         else:
-            print request.data
             # 取的access token
-            api.get_token();
+            # api.get_token();
+            resp = make_response(request.data)
+            resp.content_type = 'application/xml'
 
     except Exception as e:
-        resp =  e.message
+        resp =  make_response(e.message)
     finally:
-        return make_response(resp)
+        return resp
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0",port=80)
