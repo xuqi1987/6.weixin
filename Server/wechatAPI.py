@@ -29,6 +29,7 @@ class WechatAPI():
         # 3. 开发者获得加密后的字符串可与signature对比，标识该请求来源于微信
         key = hashlib.sha1(s).hexdigest()
         if (key == signature):
+            print "验证成功"
             return echostr
         raise Exception("验证失败")
 

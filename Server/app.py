@@ -14,12 +14,14 @@ def wechat():
             # 用于接入微信
             resp = api.wechat_auth(request)
         else:
+            print request.data
             # 取的access token
             api.get_token();
+
     except Exception as e:
         resp =  e.message
     finally:
         return make_response(resp)
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=8080,debug=True)
+    app.run(host="0.0.0.0",port=80)
