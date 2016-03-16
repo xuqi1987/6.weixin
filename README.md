@@ -61,3 +61,8 @@ def wechat_auth():
         if (key == signature):
             return make_response(echostr)
 ```
+
+**遇到小问题**
+
+因为域名没有备案，所以无法通过域名设置，只能设置ip。
+
