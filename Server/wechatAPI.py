@@ -86,7 +86,7 @@ class recv_reply_action():
 
     def do(self):
         if self.g(MsgType) == text:
-
+            pass
 
     def reply(self):
         xdata = ''
