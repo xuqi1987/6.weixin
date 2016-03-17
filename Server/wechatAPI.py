@@ -82,7 +82,6 @@ class recv_reply_action():
 
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
-        print "Recv %s" % x2j().xml2json(self.xml_recv)
 
     def do(self):
         if self.g(MsgType) == text:
