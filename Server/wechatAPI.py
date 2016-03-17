@@ -1,8 +1,12 @@
 
 # -*- coding:utf8 -*-
 import requests
-import json
 import hashlib
+import xml.etree.cElementTree as ET
+from xml2json import Xml2json as x2j
+import json
+from ct import *
+import time
 
 class WechatAPI():
     def __init__(self):
@@ -55,8 +59,43 @@ class WechatAPI():
 
     def get(self,url,params):
         r = requests.get(url,params=params)
-        print r.url
-        print r.text
         ret = json.loads(r.text)
         self.check_error(ret)
         return ret
+
+    def recv_reply(self,data):
+        action = recv_reply_action()
+        action.pre(data)
+        action.do()
+        action.reply()
+        pass
+
+
+# 用户处理用户的信息
+class recv_reply_action():
+    def __init__(self):
+        self.xml_recv = ""
+        pass
+
+    def g(self,param):
+        return self.xml_recv.find(param).text
+
+    def pre(self,data):
+        self.xml_recv = ET.fromstring(data)
+
+    def do(self):
+        if self.g(MsgType) == text:
+            print self.g(Content)
+
+    def reply(self):
+        if self.g(MsgType) == text:
+            jdata = { 'xml':{
+                ToUserName:self.g(ToUserName),
+                FromUserName:self.g(FromUserName),
+                CreateTime:str(int(time.time())),
+                MsgType:text,
+                Content:self.g(Content),
+            },
+            }
+            print jdata
+            return x2j().json2xml(jdata)

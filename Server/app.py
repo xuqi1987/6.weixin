@@ -16,9 +16,12 @@ def wechat():
         else:
             # 取的access token
             # api.get_token();
-            resp = make_response(request.data)
-            resp.content_type = 'application/xml'
 
+            # 被动回复用户消息
+            replydata = api.recv_reply(request.data)
+
+            resp = make_response(replydata)
+            resp.content_type = 'application/xml'
     except Exception as e:
         resp =  make_response(e.message)
     finally:
