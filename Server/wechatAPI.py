@@ -66,7 +66,6 @@ class WechatAPI():
     def recv_reply(self,data):
         action = recv_reply_action()
         action.pre(data)
-        action.do()
         return action.reply()
         pass
 
@@ -83,21 +82,39 @@ class recv_reply_action():
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
 
-    def do(self):
-        if self.g(MsgType) == text:
-            pass
 
     def reply(self):
         xdata = ''
         if self.g(MsgType) == text:
+            # 回复文本,并且回复原文
+            xdata = self._do_text_reply(self.g(Content))
+
+        print "Reply %s "% xdata
+        return xdata
+
+# 根据type创建回复消息格式
+    def _create_reply_xml(self,type):
+        jdata =  ''
+        if type == text:
             jdata = { 'xml':{
                 ToUserName:self.g(FromUserName),
                 FromUserName:self.g(ToUserName),
                 CreateTime:str(int(time.time())),
                 MsgType:text,
-                Content:self.g(Content),
-            },
+                Content:"<![CDATA[%s]]>",
+                },
             }
-            xdata= x2j().json2xml(jdata)
-        print "Reply %s "% xdata
-        return xdata
+            
+        rdata = x2j().json2xml(jdata)
+        rdata =rdata.replace('&lt;','<')
+        rdata = rdata.replace('&gt;','>')
+
+        return rdata
+
+# 回复Text
+    def _do_text_reply(self,context):
+        t = self._create_reply_xml(text)
+        t = t % context
+        return  t
+
+
