@@ -67,7 +67,7 @@ class WechatAPI():
         action = recv_reply_action()
         action.pre(data)
         action.do()
-        action.reply()
+        return action.reply()
         pass
 
 
@@ -85,9 +85,10 @@ class recv_reply_action():
 
     def do(self):
         if self.g(MsgType) == text:
-            print self.g(Content)
+            print "do msg %s" %  self.g(Content)
 
     def reply(self):
+        xdata = ''
         if self.g(MsgType) == text:
             jdata = { 'xml':{
                 ToUserName:self.g(ToUserName),
@@ -97,5 +98,6 @@ class recv_reply_action():
                 Content:self.g(Content),
             },
             }
-            print jdata
-            return x2j().json2xml(jdata)
+            xdata= x2j().json2xml(jdata)
+        print "reply data %s "% xdata
+        return xdata
