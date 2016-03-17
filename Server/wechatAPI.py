@@ -82,22 +82,23 @@ class recv_reply_action():
 
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
+        print "Recv %s" % x2j().xml2json(self.xml_recv)
 
     def do(self):
         if self.g(MsgType) == text:
-            print "do msg %s" %  self.g(Content)
+
 
     def reply(self):
         xdata = ''
         if self.g(MsgType) == text:
             jdata = { 'xml':{
-                ToUserName:self.g(ToUserName),
-                FromUserName:self.g(FromUserName),
+                ToUserName:self.g(FromUserName),
+                FromUserName:self.g(ToUserName),
                 CreateTime:str(int(time.time())),
                 MsgType:text,
                 Content:self.g(Content),
             },
             }
             xdata= x2j().json2xml(jdata)
-        print "reply data %s "% xdata
+        print "Reply %s "% xdata
         return xdata
