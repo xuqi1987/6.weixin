@@ -7,6 +7,8 @@ from xml2json import Xml2json as x2j
 import json
 from ct import *
 import time
+import requests
+
 
 class WechatAPI():
     def __init__(self):
@@ -111,9 +113,21 @@ class recv_reply_action():
 
         return rdata
 
+# 图灵机器人回复
+    def _get_tuling_ans(self,context):
+        url='http://www.tuling123.com/openapi/api'
+        data={'key':'fa78fe2fbb85c914c7126d42bc7c3ebb','info':context,'userid':self.g(FromUserName)}
+        r = requests.post(url,data=data)
+        ans = r.loads(r.text)
+        return ans['text']
+
 # 回复Text
     def _do_text_reply(self,context):
+        # 通过图灵得到回复
+        context = self._get_tuling_ans(context)
+        # 生成text类型的回复模版
         t = self._create_reply_xml(text)
+        # 格式化消息
         t = t % context
         return  t
 
