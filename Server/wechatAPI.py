@@ -124,7 +124,7 @@ class recv_reply_action():
 # 回复Text
     def _do_text_reply(self,context):
         # 通过图灵得到回复
-        context = self._get_tuling_ans(context)
+        # context = self._get_tuling_ans(context)
         # 生成text类型的回复模版
         t = self._create_reply_xml(text)
         # 格式化消息
