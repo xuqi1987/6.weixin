@@ -116,7 +116,7 @@ class recv_reply_action():
 # 图灵机器人回复
     def _get_tuling_ans(self,context):
         url='http://www.tuling123.com/openapi/api'
-        data={'key':'fa78fe2fbb85c914c7126d42bc7c3ebb','info':context,'userid':self.g(FromUserName)}
+        data={'key':'fa78fe2fbb85c914c7126d42bc7c3ebb','info':context,'userid':str(self.g(FromUserName))}
         r = requests.post(url,data=data)
         ans = json.loads(r.text)
         return ans['text']
