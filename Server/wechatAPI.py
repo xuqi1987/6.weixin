@@ -16,7 +16,7 @@ class WechatAPI():
         self.appid = 'wxe589b00c17795e10'
         self.secret = '577a346208002399faf26896e6462f12'
         # 获取access token
-        self.token = 'EGFTHxCNyFi_yd61zLOW70Yu7ptcCBeb8y3HHPwuz7ipFpzsKARlESbMFf3voSVGXAsdu5kkoSTR1rGAelmj5TRw-UicDto1A6QU4GK5xg7QnckgKmQni9xZhMxpRa2_YARdAAALNE'
+        self.token = ''
         self.expires = 0
 
         pass

@@ -24,10 +24,10 @@ class Recv_reply_action():
         xdata = ''
         if self.g(MsgType) == text:
             # 回复文本,并且回复原文
-            xdata = self._do_text_reply(self.g(Content))
+            #xdata = self._do_text_reply(self.g(Content))
 
             #
-            xdata = self._do_image_reply('bYD1OXaAFLmYpgPzqSKF-azRhAuyDPDKQ4sYQkKCicrGAmo7D4BMkg1-6u6FsiDz')
+            xdata = self._do_image_reply('ZmvGRjBvFSDzwiSzZeK_01sdvFXmnwkUeCUd281BrXo6SXAwWJrHijLOSncgUnjL')
 
         print "Reply %s "% xdata
         return xdata

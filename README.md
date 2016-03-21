@@ -244,6 +244,18 @@ MediaId|	是	|通过素材管理接口上传多媒体文件，得到的id。
 
 
 
+<xml>
+<MsgType>image</MsgType>
+<Image>
+<MediaId><![CDATA[bYD1OXaAFLmYpgPzqSKF-azRhAuyDPDKQ4sYQkKCicrGAmo7D4BMkg1-6u6FsiDz]]></MediaId>
+</Image>
+<FromUserName>gh_23e52455439f</FromUserName>
+<ToUserName>oBIAhwRBAwa3wMmnTHokqysK2cRM</ToUserName>
+<CreateTime>1458578600</CreateTime>
+</xml> 
+
+Reply <xml><Content><![CDATA[S]]></Content><MsgType>text</MsgType><FromUserName>gh_23e52455439f</FromUserName><ToUserName>oBIAhwRBAwa3wMmnTHokqysK2cRM</ToUserName><CreateTime>1458578853</CreateTime></xml>
+
 curl -F media=@IMG_0062.JPG "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=R3OpZJp45ugnXFmhuw616-vTQFrHewS7No6qL1HMv_cWAVnO9Dy8nx06CEuTBmKYK0mKnUhgSrrU2Kh5nVM2SpONdhL6s71YyfZnHr25c2AB_s3FTTkYbrHnkOHLbW7gSHQgAJABQZ&type=image"
 
 

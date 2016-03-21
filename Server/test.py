@@ -2,9 +2,9 @@ from  wechatAPI import *
 
 
 api = WechatAPI()
-#token =  api.get_token()
+token =  api.get_token()
 
-
+api.get_material_list()
 
 t  = Recv_reply_action()
 
