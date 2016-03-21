@@ -1,5 +1,12 @@
 from  wechatAPI import *
-t  = recv_reply_action()
+
+
+api = WechatAPI()
+#token =  api.get_token()
+
+
+
+t  = Recv_reply_action()
 
 str = '''
 <xml>

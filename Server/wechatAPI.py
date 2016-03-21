@@ -8,6 +8,7 @@ import json
 from ct import *
 import time
 import requests
+from  recvreplyaction import *
 
 
 class WechatAPI():
@@ -15,7 +16,7 @@ class WechatAPI():
         self.appid = 'wxe589b00c17795e10'
         self.secret = '577a346208002399faf26896e6462f12'
         # 获取access token
-        self.token = ''
+        self.token = 'EGFTHxCNyFi_yd61zLOW70Yu7ptcCBeb8y3HHPwuz7ipFpzsKARlESbMFf3voSVGXAsdu5kkoSTR1rGAelmj5TRw-UicDto1A6QU4GK5xg7QnckgKmQni9xZhMxpRa2_YARdAAALNE'
         self.expires = 0
 
         pass
@@ -50,14 +51,26 @@ class WechatAPI():
         if self.token == '':
             resp = self.get(url,params)
             self.token = resp['access_token']
-            self.expires = resp['expires_in']
+            self.expires = int(resp['expires_in']) +time.time()
             print resp
         pass
+        return self.token
 
-    def check_error(ret,self):
+    def get_material_list(self):
+        url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material"
+        data = {'type':"image",
+                  'offset':0,
+                  'count':20}
+        param = {'access_token':self.get_token()}
+        resp = self.post(url,params=param, data=json.dumps(data))
+
+        print resp
+
+        pass
+
+    def check_error(self,ret):
         if ret.has_key('errcode'):
             raise Exception(ret)
-
 
     def get(self,url,params):
         r = requests.get(url,params=params)
@@ -65,85 +78,18 @@ class WechatAPI():
         self.check_error(ret)
         return ret
 
+    def post(self,url,params,data):
+        r = requests.post(url,params=params,data=data)
+        ret = json.loads(r.text)
+        self.check_error(ret)
+        return ret
+
     def recv_reply(self,data):
-        action = recv_reply_action()
+        action = Recv_reply_action()
         action.pre(data)
         return action.reply()
         pass
 
 
-# 用户处理用户的信息
-class recv_reply_action():
-    def __init__(self):
-        self.xml_recv = ""
-        pass
-
-    def g(self,param):
-        return self.xml_recv.find(param).text
-
-    def pre(self,data):
-        self.xml_recv = ET.fromstring(data)
-
-
-    def reply(self):
-        xdata = ''
-        if self.g(MsgType) == text:
-            # 回复文本,并且回复原文
-            xdata = self._do_text_reply(self.g(Content))
-
-        print "Reply %s "% xdata
-        return xdata
-
-# 根据type创建回复消息格式
-    def _create_reply_xml(self,type):
-        jdata =  ''
-        if type == text:
-            jdata = { 'xml':{
-                ToUserName:self.g(FromUserName),
-                FromUserName:self.g(ToUserName),
-                CreateTime:str(int(time.time())),
-                MsgType:text,
-                Content:"<![CDATA[%s]]>",
-                },
-            }
-            
-        rdata = x2j().json2xml(jdata)
-        rdata =rdata.replace('&lt;','<')
-        rdata = rdata.replace('&gt;','>')
-
-        return rdata
-
-# 图灵机器人回复
-    def _get_tuling_ans(self,context):
-        url='http://www.tuling123.com/openapi/api'
-        data={'key':'fa78fe2fbb85c914c7126d42bc7c3ebb','info':context,'userid':str(self.g(FromUserName))}
-        r = requests.post(url,data=data)
-        ans = json.loads(r.text)
-        ret = ''
-        if ans['code'] == 100000:
-            ret = ans['text']
-        elif ans['code'] == 200000:
-            ret = ans['text'] + '\n' + ans['url']
-        elif ans['code'] == 302000:
-            ret = ans['text'] + '\n'
-            for i in  ans['list']:
-                ret = ret + i['article'] + '\n' + i['detailurl'] + '\n\n'
-        elif a['code'] == 308000:
-            print a['text']
-
-        else:
-            ret = 'error'
-
-        return ret
-
-# 回复Text
-    def _do_text_reply(self,context):
-        # 通过图灵得到回复
-        context = self._get_tuling_ans(context)
-        # 生成text类型的回复模版
-        t = self._create_reply_xml(text)
-        # 格式化消息
-        t = t % context
-        return  t
 
 
