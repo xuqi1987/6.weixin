@@ -119,7 +119,22 @@ class recv_reply_action():
         data={'key':'fa78fe2fbb85c914c7126d42bc7c3ebb','info':context,'userid':str(self.g(FromUserName))}
         r = requests.post(url,data=data)
         ans = json.loads(r.text)
-        return ans['text']
+        ret = ''
+        if ans['code'] == 100000:
+            ret = ans['text']
+        elif ans['code'] == 200000:
+            ret = ans['text'] + '\n' + ans['url']
+        elif ans['code'] == 302000:
+            ret = ans['text'] + '\n'
+            for i in  ans['list']:
+                ret = ret + i['article'] + '\n' + i['detailurl'] + '\n\n'
+        elif a['code'] == 308000:
+            print a['text']
+
+        else:
+            ret = 'error'
+
+        return ret
 
 # 回复Text
     def _do_text_reply(self,context):

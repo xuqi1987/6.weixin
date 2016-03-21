@@ -211,6 +211,17 @@ test.py
 这里介绍的解决方法就是重写_write方法，然后在_write方法中，判断是否是自定义的标签，如果是的，返回自定义的格式。
 但是我重写了这个方法后，发现父类没有这个方法。所以这个解决办法不可用。
 
+最终的解决办法：
+
+```
+        rdata = x2j().json2xml(jdata)
+        rdata =rdata.replace('&lt;','<')
+        rdata = rdata.replace('&gt;','>')
+        
+```
+
+
+
 
 
 
