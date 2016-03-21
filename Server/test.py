@@ -1,10 +1,11 @@
 from  wechatAPI import *
+from xml2json import *
 
-
+j2x = Xml2json()
 api = WechatAPI()
-token =  api.get_token()
+#token =  api.get_token()
 
-api.get_material_list()
+#api.get_material_list()
 
 t  = Recv_reply_action()
 
@@ -19,4 +20,5 @@ str = '''
  </xml>
  '''
 t.pre(str)
-t.reply()
+print j2x.xml2json(t.reply())
+print j2x.xml2json('''<xml><MsgType>image</MsgType><Image><MediaId><![CDATA[ZmvGRjBvFSDzwiSzZeK_01sdvFXmnwkUeCUd281BrXo6SXAwWJrHijLOSncgUnjL]]></MediaId></Image><FromUserName>gh_23e52455439f</FromUserName><ToUserName>oBIAhwRBAwa3wMmnTHokqysK2cRM</ToUserName><CreateTime>1458580951</CreateTime></xml> ''')

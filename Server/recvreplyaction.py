@@ -59,6 +59,7 @@ class Recv_reply_action():
             }
         else:
             pass
+        print jdata
         rdata = x2j().json2xml(jdata)
         rdata =rdata.replace('&lt;','<')
         rdata = rdata.replace('&gt;','>')

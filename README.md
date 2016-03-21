@@ -242,7 +242,7 @@ CreateTime|	是	|消息创建时间 （整型）
 MsgType|	是	|image
 MediaId|	是	|通过素材管理接口上传多媒体文件，得到的id。
 
-
+gh_23e52455439f
 
 <xml>
 <MsgType>image</MsgType>
