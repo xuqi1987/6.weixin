@@ -53,7 +53,7 @@ class Recv_reply_action():
                 CreateTime:str(int(time.time())),
                 MsgType:image,
                 'Image':{
-                    MediaId:"<![CDATA[%s]]>",
+                    MediaId:"%s",
                 },
                 },
             }
