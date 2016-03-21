@@ -211,17 +211,40 @@ test.py
 这里介绍的解决方法就是重写_write方法，然后在_write方法中，判断是否是自定义的标签，如果是的，返回自定义的格式。
 但是我重写了这个方法后，发现父类没有这个方法。所以这个解决办法不可用。
 
-最终的解决办法：
+最后的解决办法是
 
 ```
-        rdata = x2j().json2xml(jdata)
-        rdata =rdata.replace('&lt;','<')
-        rdata = rdata.replace('&gt;','>')
-        
+	rdata = x2j().json2xml(jdata)
+	rdata =rdata.replace('&lt;','<')
+	rdata = rdata.replace('&gt;','>')
 ```
 
+### 回复图片消息
+
+```
+<xml>
+<ToUserName><![CDATA[toUser]]></ToUserName>
+<FromUserName><![CDATA[fromUser]]></FromUserName>
+<CreateTime>12345678</CreateTime>
+<MsgType><![CDATA[image]]></MsgType>
+<Image>
+<MediaId><![CDATA[media_id]]></MediaId>
+</Image>
+</xml>
+
+```
+
+参数	|是否必须	|说明
+---|---|---
+ToUserName|	是	|接收方帐号（收到的OpenID）
+FromUserName|	是	|开发者微信号
+CreateTime|	是	|消息创建时间 （整型）
+MsgType|	是	|image
+MediaId|	是	|通过素材管理接口上传多媒体文件，得到的id。
 
 
 
+curl -F media=@IMG_0062.JPG "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=R3OpZJp45ugnXFmhuw616-vTQFrHewS7No6qL1HMv_cWAVnO9Dy8nx06CEuTBmKYK0mKnUhgSrrU2Kh5nVM2SpONdhL6s71YyfZnHr25c2AB_s3FTTkYbrHnkOHLbW7gSHQgAJABQZ&type=image"
 
 
+bYD1OXaAFLmYpgPzqSKF-azRhAuyDPDKQ4sYQkKCicrGAmo7D4BMkg1-6u6FsiDz
