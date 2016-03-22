@@ -14,7 +14,7 @@ class Recv_reply_action():
         pass
 
     def g(self,param):
-        return self.xml_recv.find(param).text
+        return  self.xml_recv.find(param).text
 
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
@@ -26,8 +26,8 @@ class Recv_reply_action():
             # 回复文本,并且回复原文
             #xdata = self._do_text_reply(self.g(Content))
 
-            #
-            xdata = self._do_image_reply('ZmvGRjBvFSDzwiSzZeK_01sdvFXmnwkUeCUd281BrXo6SXAwWJrHijLOSncgUnjL')
+            # 回复图片
+            xdata = self._do_image_reply(self.g(MediaId))
 
         print "Reply %s "% xdata
         return xdata
@@ -40,7 +40,7 @@ class Recv_reply_action():
                 ToUserName:self.g(FromUserName),
                 FromUserName:self.g(ToUserName),
                 CreateTime:str(int(time.time())),
-                MsgType:text,
+                MsgType: text,
                 Content:"<![CDATA[%s]]>",
                 },
             }
@@ -53,7 +53,7 @@ class Recv_reply_action():
                 CreateTime:str(int(time.time())),
                 MsgType:image,
                 'Image':{
-                    MediaId:"%s",
+                    MediaId:"<![CDATA[%s]]>",
                 },
                 },
             }
@@ -103,5 +103,5 @@ class Recv_reply_action():
     def _do_image_reply(self,mediaid):
         t = self._create_reply_xml(image)
 
-        t = t %mediaid
+        t = t % mediaid
         return t
