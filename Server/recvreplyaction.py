@@ -18,7 +18,17 @@ class Recv_reply_action():
 
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
+        print self.xml_recv
 
+    def do(self,data):
+        if self.g(MsgType) == text:
+            pass
+
+        elif self.g(MsgType) == image:
+            self._get_image(self.g(PicUrl),time.time() + '.jpg')
+        else:
+            pass
+        pass
 
     def reply(self):
         xdata = ''
@@ -29,9 +39,9 @@ class Recv_reply_action():
         elif self.g(MsgType) == image:
             # 回复图片
             xdata = self._do_image_reply(self.g(MediaId))
+
         else:
             pass
-
         print "Reply %s "% xdata
         return xdata
 
@@ -109,3 +119,11 @@ class Recv_reply_action():
 
         t = t % mediaid
         return t
+
+    def _get_image(self,url,name):
+        f = requests.get(url)
+        file = open(name,"w")
+        file.write(f.content)
+        file.flush()
+        file.close()
+        return f.content

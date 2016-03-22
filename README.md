@@ -219,6 +219,32 @@ test.py
 	rdata = rdata.replace('&gt;','>')
 ```
 
+### 收用户的图片消息
+```
+ <xml>
+ <ToUserName><![CDATA[toUser]]></ToUserName>
+ <FromUserName><![CDATA[fromUser]]></FromUserName>
+ <CreateTime>1348831860</CreateTime>
+ <MsgType><![CDATA[image]]></MsgType>
+ <PicUrl><![CDATA[this is a url]]></PicUrl>
+ <MediaId><![CDATA[media_id]]></MediaId>
+ <MsgId>1234567890123456</MsgId>
+ </xml>
+
+```
+
+参数|描述
+---|---
+ToUserName	|开发者微信号
+FromUserName	|发送方帐号（一个OpenID）
+CreateTime	|消息创建时间 （整型）
+MsgType	|image
+PicUrl	|图片链接
+MediaId	|图片消息媒体id，可以调用多媒体文件下载接口拉取数据。
+MsgId	|消息id，64位整型
+
+
+
 ### 回复图片消息
 
 ```
@@ -242,21 +268,5 @@ CreateTime|	是	|消息创建时间 （整型）
 MsgType|	是	|image
 MediaId|	是	|通过素材管理接口上传多媒体文件，得到的id。
 
-gh_23e52455439f
-
-<xml>
-<MsgType>image</MsgType>
-<Image>
-<MediaId><![CDATA[bYD1OXaAFLmYpgPzqSKF-azRhAuyDPDKQ4sYQkKCicrGAmo7D4BMkg1-6u6FsiDz]]></MediaId>
-</Image>
-<FromUserName>gh_23e52455439f</FromUserName>
-<ToUserName>oBIAhwRBAwa3wMmnTHokqysK2cRM</ToUserName>
-<CreateTime>1458578600</CreateTime>
-</xml> 
-
-Reply <xml><Content><![CDATA[S]]></Content><MsgType>text</MsgType><FromUserName>gh_23e52455439f</FromUserName><ToUserName>oBIAhwRBAwa3wMmnTHokqysK2cRM</ToUserName><CreateTime>1458578853</CreateTime></xml>
-
-curl -F media=@IMG_0062.JPG "https://api.weixin.qq.com/cgi-bin/media/upload?access_token=R3OpZJp45ugnXFmhuw616-vTQFrHewS7No6qL1HMv_cWAVnO9Dy8nx06CEuTBmKYK0mKnUhgSrrU2Kh5nVM2SpONdhL6s71YyfZnHr25c2AB_s3FTTkYbrHnkOHLbW7gSHQgAJABQZ&type=image"
 
 
-bYD1OXaAFLmYpgPzqSKF-azRhAuyDPDKQ4sYQkKCicrGAmo7D4BMkg1-6u6FsiDz

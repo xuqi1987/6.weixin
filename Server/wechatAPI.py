@@ -54,6 +54,7 @@ class WechatAPI():
             self.expires = int(resp['expires_in']) +time.time()
             print resp
         pass
+
         return self.token
 
     def get_material_list(self):
@@ -86,8 +87,9 @@ class WechatAPI():
 
     def recv_reply(self,data):
         action = Recv_reply_action()
-        print data
+
         action.pre(data)
+        action.do(data)
         return action.reply()
         pass
 
