@@ -58,6 +58,7 @@ class Recv_reply_action():
                 },
             }
         else:
+            print "Type error: %s" % type
             pass
         print jdata
         rdata = x2j().json2xml(jdata)
