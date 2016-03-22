@@ -18,14 +18,15 @@ class Recv_reply_action():
 
     def pre(self,data):
         self.xml_recv = ET.fromstring(data)
-        print self.xml_recv
+
 
     def do(self,data):
+        print data
+
         if self.g(MsgType) == text:
             pass
-
         elif self.g(MsgType) == image:
-            self._get_image(self.g(PicUrl),time.time() + '.jpg')
+            self._get_image(self.g(PicUrl),str(time.time()) + '.jpg')
         else:
             pass
         pass
