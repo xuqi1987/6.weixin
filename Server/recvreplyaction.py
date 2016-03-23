@@ -9,77 +9,32 @@ import json
 
  # 用户处理用户的信息
 class Recv_reply_action():
-    def __init__(self):
-        self.xml_recv = ""
+    def __init__(self,data):
+        self.xml_recv = ET.fromstring(data)
+        # 处理的函数
+        self.f_do = {
+            text : self._do_text_reply,# 回复文本,并且回复原文
+            image : self._do_image_reply # 回复图片
+        }
+        # 回复的xml
+        self.f_xml = {
+            text : self._create_reply_xml_text,
+            image : self._create_reply_xml_img,
+        }
+        # 收到的消息类型
+        self.type = self.xml_recv.find(MsgType).text
+
         pass
 
     def g(self,param):
         return  self.xml_recv.find(param).text
 
-    def pre(self,data):
-        self.xml_recv = ET.fromstring(data)
-
-
-    def do(self,data):
-        print data
-
-        if self.g(MsgType) == text:
-            pass
-        elif self.g(MsgType) == image:
-            self._get_image(self.g(PicUrl),str(time.time()) + '.jpg')
-        else:
-            pass
-        pass
 
     def reply(self):
-        xdata = ''
-        if self.g(MsgType) == text:
-            # 回复文本,并且回复原文
-            xdata = self._do_text_reply(self.g(Content))
-
-        elif self.g(MsgType) == image:
-            # 回复图片
-            xdata = self._do_image_reply(self.g(MediaId))
-
-        else:
-            pass
+        # 根据Type选择处理函数
+        xdata = self.f_do.get(self.type)(self.xml_recv)
         print "Reply %s "% xdata
         return xdata
-
-    # 根据type创建回复消息格式
-    def _create_reply_xml(self,type):
-        jdata =  ''
-        if type == text:
-            jdata = { 'xml':{
-                ToUserName:self.g(FromUserName),
-                FromUserName:self.g(ToUserName),
-                CreateTime:str(int(time.time())),
-                MsgType: text,
-                Content:"<![CDATA[%s]]>",
-                },
-            }
-
-        elif type == image:
-
-            jdata = {'xml':{
-                ToUserName:self.g(FromUserName),
-                FromUserName:self.g(ToUserName),
-                CreateTime:str(int(time.time())),
-                MsgType:image,
-                'Image':{
-                    MediaId:"<![CDATA[%s]]>",
-                },
-                },
-            }
-        else:
-            print "Type error: %s" % type
-            pass
-        print jdata
-        rdata = x2j().json2xml(jdata)
-        rdata =rdata.replace('&lt;','<')
-        rdata = rdata.replace('&gt;','>')
-
-        return rdata
 
     # 图灵机器人回复
     def _get_tuling_ans(self,context):
@@ -105,21 +60,54 @@ class Recv_reply_action():
         return ret
 
     # 回复Text
-    def _do_text_reply(self,context):
+    def _do_text_reply(self,data):
+        key = data.find(Content).text
         # 通过图灵得到回复
-        context = self._get_tuling_ans(context)
-        # 生成text类型的回复模版
-        t = self._create_reply_xml(text)
+        context = self._get_tuling_ans(key)
+        #  调用_create_reply_xml_text 生成文本回复模版
+        t = self.f_xml.get(self.type)()
         # 格式化消息
         t = t % context
         return  t
 
 
-    def _do_image_reply(self,mediaid):
-        t = self._create_reply_xml(image)
+    def _do_image_reply(self,data):
+        mediaid = data.find(MediaId).text
+        # 调用_create_reply_xml_img
+        t = self.f_xml.get(self.type)()
 
         t = t % mediaid
         return t
+
+    def _create_reply_xml_text(self):
+        jdata = { 'xml':{
+            ToUserName:self.g(FromUserName),
+            FromUserName:self.g(ToUserName),
+            CreateTime:str(int(time.time())),
+            MsgType: text,
+            Content:"<![CDATA[%s]]>",
+        },
+        }
+        rdata = x2j().json2xml(jdata)
+        rdata =rdata.replace('&lt;','<')
+        rdata = rdata.replace('&gt;','>')
+        return rdata
+
+    def _create_reply_xml_img(self):
+        jdata = {'xml':{
+            ToUserName:self.g(FromUserName),
+            FromUserName:self.g(ToUserName),
+            CreateTime:str(int(time.time())),
+            MsgType:image,
+            'Image':{
+            MediaId:"<![CDATA[%s]]>",
+            },
+            },
+        }
+        rdata = x2j().json2xml(jdata)
+        rdata =rdata.replace('&lt;','<')
+        rdata = rdata.replace('&gt;','>')
+        return rdata
 
     def _get_image(self,url,name):
         f = requests.get(url)

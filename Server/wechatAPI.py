@@ -86,9 +86,8 @@ class WechatAPI():
         return ret
 
     def recv_reply(self,data):
-        action = Recv_reply_action()
+        action = Recv_reply_action(data)
 
-        action.pre(data)
         action.do(data)
         return action.reply()
         pass
