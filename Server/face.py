@@ -42,7 +42,7 @@ class Face():
         return ""
 
     def getface(self,face_id):
-        ret = self.api.info.get_face(face_id)
+        ret = self.api.info.get_face(face_id=face_id)
         print_result("face",ret)
         return ret
 

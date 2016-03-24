@@ -79,10 +79,10 @@ class Recv_reply_action():
         picurl = data.find(PicUrl).text
 
         faceid = self.face_api.checkface(picurl)
-
+        print faceid
         if len(faceid):
             t = self.f_xml.get(text)()
-            t = t % u"这是谁啊?"
+            t = t % self._do_face_check_reply(faceid)
             pass
         else:
              # 调用_create_reply_xml_img
@@ -90,6 +90,31 @@ class Recv_reply_action():
             t = t % mediaid
             pass
         return t
+
+    def _do_face_check_reply(self,faceid):
+        faceinfo = self.face_api.getface(faceid)['face_info'][0]['attribute']
+        age = faceinfo['age']['value']
+
+        gender = faceinfo['gender']['value']
+        race = faceinfo['race']['value']
+
+        name = ""
+        if (race != 'Asian'):
+            return "老外我不认识"
+        elif (age < 10 and gender =='Male') :
+            name = "小帅哥"
+        elif (age < 10 and gender != 'Male') :
+            name = "小美女"
+        elif (age < 40 and gender == "Male") :
+            name = "叔叔"
+        elif (age < 40 and gender != "Male"):
+            name = "阿姨"
+        else:
+            pass
+
+        return "这位%s是谁啊?" % name
+        pass
+
 
     def _create_reply_xml_text(self):
         jdata = { 'xml':{
