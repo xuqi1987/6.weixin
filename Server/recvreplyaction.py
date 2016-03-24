@@ -77,11 +77,18 @@ class Recv_reply_action():
     def _do_image_reply(self,data):
         mediaid = data.find(MediaId).text
         picurl = data.find(PicUrl).text
-        self.face_api.checkface(picurl)
-        # 调用_create_reply_xml_img
-        t = self.f_xml.get(self.type)()
 
-        t = t % mediaid
+        faceid = self.face_api.checkface(picurl)
+
+        if len(faceid):
+            t = self.f_xml.get(text)()
+            t = t % u"这是谁啊?"
+            pass
+        else:
+             # 调用_create_reply_xml_img
+            t = self.f_xml.get(self.type)()
+            t = t % mediaid
+            pass
         return t
 
     def _create_reply_xml_text(self):

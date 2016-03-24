@@ -34,10 +34,17 @@ class Face():
         pass
 
     def checkface(self,url):
-        ret = self.api.detection.detect(url = url)
-        print_result("face",ret)
+        face = self.api.detection.detect(url = url)['face']
 
-        pass
+        if len(face) > 0:
+            self.faces.append(face[0]['face_id'])
+            return face[0]['face_id']
+        return ""
+
+    def getface(self,face_id):
+        ret = self.api.info.get_face(face_id)
+        print_result("face",ret)
+        return ret
 
     def add_person(self,name,url):
 

@@ -15,13 +15,28 @@ str = '''
 <FromUserName><![CDATA[oBIAhwRBAwa3wMmnTHokqysK2cRM]]></FromUserName>
 <CreateTime>1458833072</CreateTime>
 <MsgType><![CDATA[image]]></MsgType>
-<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz/NDuqv9w08JkqdM1mXtDibnRBaVPYr0K24C9EiafxAHGTibxqicdfDEV3vr7xb0icEOZdoKtoKicOX8WVEGX16mZ9sOTA/0]]></PicUrl>
+<PicUrl><![CDATA[http://mmbiz.qpic.cn/mmbiz/NDuqv9w08JkqdM1mXtDibnRBaVPYr0K24F5GeVJXuqibuvYiawFicLmd8SgJgKTYC1mqBQ8nO9F3iaknWRFBicq7IOFg/0]]></PicUrl>
 <MsgId>6265640334966857004</MsgId>
 <MediaId><![CDATA[0NQfsmPw4Idpa52nBIJKLgAvRFkXcBfkllQBIydQeLm1doVMpQAuENDg_-FcWEJ3]]></MediaId>
 </xml>
  '''
 t  = Recv_reply_action(str)
 print t.reply()
+
+#
+str = '''
+<xml><ToUserName><![CDATA[gh_23e52455439f]]></ToUserName>
+<FromUserName><![CDATA[oBIAhwRBAwa3wMmnTHokqysK2cRM]]></FromUserName>
+<CreateTime>1458833072</CreateTime>
+<MsgType><![CDATA[image]]></MsgType>
+<PicUrl><![CDATA[https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superman/img/logo/bd_logo1_31bdc765.png]]></PicUrl>
+<MsgId>6265640334966857004</MsgId>
+<MediaId><![CDATA[0NQfsmPw4Idpa52nBIJKLgAvRFkXcBfkllQBIydQeLm1doVMpQAuENDg_-FcWEJ3]]></MediaId>
+</xml>
+ '''
+t  = Recv_reply_action(str)
+print t.reply()
+
 
 # t.pre(str)
 # print j2x.xml2json(t.reply())
