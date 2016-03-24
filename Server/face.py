@@ -31,9 +31,13 @@ class Face():
         self.api = API(API_KEY, API_SECRET)
         self.persons = []
         self.faces = []
-
         pass
 
+    def checkface(self,url):
+        ret = self.api.detection.detect(url = url)
+        print_result("face",ret)
+
+        pass
 
     def add_person(self,name,url):
 

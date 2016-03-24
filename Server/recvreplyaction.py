@@ -6,6 +6,8 @@ import time
 import xml.etree.cElementTree as ET
 from xml2json import Xml2json as x2j
 import json
+from face import Face
+
 
  # 用户处理用户的信息
 class Recv_reply_action():
@@ -24,6 +26,7 @@ class Recv_reply_action():
         # 收到的消息类型
         self.type = self.xml_recv.find(MsgType).text
 
+        self.face_api = Face()
         pass
 
     def g(self,param):
@@ -73,6 +76,8 @@ class Recv_reply_action():
 
     def _do_image_reply(self,data):
         mediaid = data.find(MediaId).text
+        picurl = data.find(PicUrl).text
+        self.face_api.checkface(picurl)
         # 调用_create_reply_xml_img
         t = self.f_xml.get(self.type)()
 
