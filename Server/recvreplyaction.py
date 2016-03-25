@@ -102,17 +102,17 @@ class Recv_reply_action():
         if (race != 'Asian'):
             return "老外我不认识"
         elif (age < 10 and gender =='Male') :
-            name = "小帅哥"
+            name = "小哥哥"
         elif (age < 10 and gender != 'Male') :
-            name = "小美女"
+            name = "小姐姐"
         elif (age < 40 and gender == "Male") :
-            name = "叔叔"
+            name = "帅哥"
         elif (age < 40 and gender != "Male"):
-            name = "阿姨"
+            name = "美女"
         else:
             pass
 
-        return "这位%s是谁啊?" % name
+        return "这位%s是谁啊?看起来大概有%s岁" %  (name,age)
         pass
 
 

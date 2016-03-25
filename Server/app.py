@@ -1,10 +1,10 @@
 # -*- coding:utf8 -*-
 import time
-from flask import Flask,request, make_response
+from flask import Flask,request, make_response,render_template,request,flash
 from wechatAPI import *
 
 app = Flask(__name__)
-
+app.secret_key = 'some_secret'
 @app.route('/', methods = ['GET', 'POST'] )
 def wechat():
     resp = make_response('')
@@ -27,5 +27,17 @@ def wechat():
     finally:
         return resp
 
+@app.route('/addface', methods = ['Get','POST'])
+def addface():
+    if request.method == 'POST':
+        file  = request.files['imagefile']
+        if len(request.form['name'])==0:
+            flash("漏填称呼了")
+            pass
+        filename = request.files['imagefile'].filename
+        file.save(filename)
+    return render_template("index.html")
+    pass
+
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=80)
+    app.run(host="0.0.0.0",port=1234,debug=True)
