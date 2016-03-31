@@ -89,8 +89,8 @@ print 'The person with highest confidence:', \
 
 # Finally, delete the persons and group because they are no longer needed
 # 最终，删除无用的person和group
-api.group.delete(group_name = 'test')
-api.person.delete(person_name = FACES.iterkeys())
+# api.group.delete(group_name = 'test')
+# api.person.delete(person_name = FACES.iterkeys())
 
 # Congratulations! You have finished this tutorial, and you can continue
 # reading our API document and start writing your own App using Face++ API!

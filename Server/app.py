@@ -1,8 +1,12 @@
 # -*- coding:utf8 -*-
 import time
-from flask import Flask,request, make_response,render_template,request,flash
+from flask import Flask,request, make_response,render_template,request,flash,url_for
 from wechatAPI import *
-
+from face import Face
+import time
+import os
+from facepp import File
+face_api = Face()
 app = Flask(__name__)
 app.secret_key = 'some_secret'
 @app.route('/', methods = ['GET', 'POST'] )
@@ -30,14 +34,17 @@ def wechat():
 @app.route('/addface', methods = ['Get','POST'])
 def addface():
     if request.method == 'POST':
-        file  = request.files['imagefile']
-        if len(request.form['name'])==0:
-            flash("漏填称呼了")
+        imagefile  = request.files['imagefile']
+
+        name = request.form['name']
+        if len(name)==0:
+            flash(u"请填写称呼")
             pass
-        filename = request.files['imagefile'].filename
-        file.save(filename)
+        else:
+            path = os.getcwd() +"/img/" + imagefile.filename
+            imagefile.save(path)
+            face_api.add_person(name,img=File(path=path))
     return render_template("index.html")
-    pass
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=80)
+    app.run(host="0.0.0.0",port=8000,debug=True)

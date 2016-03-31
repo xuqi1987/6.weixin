@@ -52,9 +52,12 @@ class File(object):
     """an object representing a local file"""
     path = None
     content = None
-    def __init__(self, path):
+    def __init__(self, path=None,stream = None):
         self.path = path
-        self._get_content()
+        if path != None:
+            self._get_content()
+        else:
+            self.content = stream
 
     def _resize_cv2(self, ftmp):
         try:
@@ -96,6 +99,7 @@ class File(object):
                     raise APIError(-1, None, 'image file size too large')
                 with open(ftmp, 'rb') as f:
                     self.content = f.read()
+
             finally:
                 os.unlink(ftmp)
         else:
@@ -103,8 +107,10 @@ class File(object):
                 self.content = f.read()
 
     def get_filename(self):
-        return os.path.basename(self.path)
-
+        if self.path != None:
+            return os.path.basename(self.path)
+        else:
+            return "test.jpg"
 
 class APIError(Exception):
     code = None
@@ -220,6 +226,7 @@ class _APIProxy(object):
 
         request = urllib2.Request(url)
         if add_form:
+
             body = str(form)
             request.add_header('Content-type', form.get_content_type())
             request.add_header('Content-length', str(len(body)))
@@ -327,7 +334,7 @@ class _MultiPartForm(object):
         parts.extend(
             [ part_boundary,
               'Content-Disposition: file; name="%s"; filename="%s"' % \
-                 (field_name, filename),
+                 (field_name, filename.encode('UTF-8')), # filename is not utf-8,so it is need to change utf-8
               'Content-Type: %s' % content_type,
               '',
               body,
@@ -340,6 +347,7 @@ class _MultiPartForm(object):
         flattened = list(itertools.chain(*parts))
         flattened.append('--' + self.boundary + '--')
         flattened.append('')
+
         return '\r\n'.join(flattened)
 
 

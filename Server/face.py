@@ -46,16 +46,41 @@ class Face():
         print_result("face",ret)
         return ret
 
+    def get_person_list(self):
+        people = self.api.info.get_person_list()['person']
+        for item in people:
+                yield item['person_name']
+
     def add_person(self,name,url):
 
         # 创建face
-        self.faces = {name: self.api.detection.detect(url = url)}
-
-        # 创建person
-        for name, face in self.faces.iteritems():
+        face = self.api.detection.detect(url = url)['face'][0]
+        # 如果这个人没有了
+        if name not in self.get_person_list():
             rst = self.api.person.create(
-                    person_name = name, face_id = face['face'][0]['face_id'])
-        pass
+                person_name = name, face_id = face['face_id'])
+        # 如果有这个人
+        else:
+            rst = self.api.person.add_face(
+                person_name = name, face_id = face['face_id'])
+
+    def add_person(self,name,img):
+
+        # 创建face
+        faceinfo = self.api.detection.detect(img = img)
+
+        print_result("xuqi",faceinfo)
+        #face = self.api.detection.detect(img = img)['face'][0]
+        face= faceinfo['face'][0]
+
+        # 如果这个人没有了
+        if name not in self.get_person_list():
+            rst = self.api.person.create(
+                person_name = name, face_id = face['face_id'])
+        # 如果有这个人
+        else:
+            rst = self.api.person.add_face(
+                person_name = name, face_id = face['face_id'])
 
 
     def create_group(self,groupname):
