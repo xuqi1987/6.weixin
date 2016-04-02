@@ -51,15 +51,27 @@ class Face():
         for item in people:
                 yield item['person_name']
 
-    def add_person(self,name,url):
+    def add_person(self,name,url=None,img=None):
+        facesinfo = {}
+        faces = []
+        if url != None:
+            # 创建face
+            facesinfo = self.api.detection.detect(url = url)
+        elif img != None:
+            facesinfo =self.api.detection.detect(img = img)
+        else:
+            print "param error"
+            return False
 
-        ret = False
-        # 创建face
-        faces = self.api.detection.detect(url = url)['face']
+        print facesinfo
+
+        if facesinfo.has_key("face") == False:
+            return False
+
+        faces = facesinfo['face']
+
         if len(faces) > 0:
             face = faces[0]
-
-            ret = True
             # 如果这个人没有了
             if name not in self.get_person_list():
                 rst = self.api.person.create(
@@ -68,25 +80,7 @@ class Face():
             else:
                 rst = self.api.person.add_face(
                     person_name = name, face_id = face['face_id'])
-        return ret
-    
-    def add_person(self,name,img):
-
-        # 创建face
-        faceinfo = self.api.detection.detect(img = img)
-
-        print_result("xuqi",faceinfo)
-        #face = self.api.detection.detect(img = img)['face'][0]
-        face= faceinfo['face'][0]
-
-        # 如果这个人没有了
-        if name not in self.get_person_list():
-            rst = self.api.person.create(
-                person_name = name, face_id = face['face_id'])
-        # 如果有这个人
-        else:
-            rst = self.api.person.add_face(
-                person_name = name, face_id = face['face_id'])
+        return True
 
 
     def create_group(self,groupname):
