@@ -108,9 +108,14 @@ class Face():
         print rst
         candidate = rst['face'][0]['candidate']
         name = []
+        print '-'*100
         for c in candidate:
+            print c['confidence']
+            print c['person_name']
             if c['confidence'] > 60:
                 name.append(c['person_name'])
+        print '-'*100
+
         print 'identify end : %s' % ''.join(name)
         return name
 
