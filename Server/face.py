@@ -103,7 +103,7 @@ class Face():
         pass
 
     def identify(self,groupname='family',faceid=None,url=None):
-        print 'identify'
+        print 'identify start'
         rst = self.api.recognition.identify(group_name=groupname,faceid=faceid)
         print rst
         candidate = rst['face']['candidate']
@@ -111,7 +111,7 @@ class Face():
         for c in candidate:
             if c['confidence'] > 90:
                 name.append(c['person_name'])
-        print name
+        print 'identify end : %s' % ''.join(name)
         return name
 
         pass

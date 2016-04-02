@@ -78,7 +78,9 @@ from facepp import API,File
 
 api = API(API_KEY, API_SECRET)
 # rst = api.group.create(group_name = 'family')
-api.group.add_person(group_name = 'family',person_name='奶奶')
+# api.group.add_person(group_name = 'family',person_name='奶奶')
+ret = api.train.identify(group_name='family')
+print api.info.get_session(session_id = ret['session_id'])
 # api.detection.detect(img=File('/Users/xuqi/Documents/proj/6.weixin/Server/img/liudehua_1458996111.24.jpg'))
 #
 # dict = {"a" : "apple", "b" : "banana"}
