@@ -51,9 +51,10 @@ class Face():
         for item in people:
                 yield item['person_name']
 
-    def add_person(self,name,url=None,img=None,faceid=None):
+    def add_person(self,name,url=None,img=None,id=None):
         facesinfo = {}
         faces = []
+        print "url=%s,img=%s,id=%s"%(url,img,id)
         if url != None or img != None:
             if url != None:
                 # 创建face
@@ -74,8 +75,9 @@ class Face():
 
             face = faces[0]['face_id']
 
-        elif faceid != None:
-            face = faceid
+        elif id != None:
+            face = id
+            pass
         else:
             print "param error"
             return False
