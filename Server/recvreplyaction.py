@@ -97,10 +97,20 @@ class Recv_reply_action():
         faceid = self.face_api.checkface(picurl)
         # step 1.check pic,if it contains face
         if len(faceid):
+
             t = self.f_xml.get(text)()
-            # setp 2.save the face id ,and openid,return the question.
-            t = t % self._start_face_train(data=data,faceid=faceid,step=1)
-            pass
+            # step 1.1 try to find some body
+            name = self.face_api.identify(groupname='family',faceid=faceid)
+            # know this person
+            if len(name) == 1 :
+                t = t % "%s,爱你哦~" % name[0]
+            elif len(name) > 1:
+                t = t % "我分不清楚,但是你和%s好像~" %','.join(name)
+            # do not know this person
+            else:
+                # setp 2.save the face id ,and openid,return the question.
+                t = t % self._start_face_train(data=data,faceid=faceid,step=1)
+                pass
         else:
              # 调用_create_reply_xml_img
             t = self.f_xml.get(self.type)()
@@ -122,7 +132,6 @@ class Recv_reply_action():
             faceid =lastdata.pop(openid)
             if self.face_api.add_person(content,id=faceid):
                 self.face_api.add_person_2_group(content,'family')
-
                 return u"好的,我认识了%s"%content
             else:
                 return u'我记不住~'

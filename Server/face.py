@@ -101,7 +101,16 @@ class Face():
         print 'session id %s' %sessionid
         pass
 
+    def identify(self,groupname='family',faceid=None,url=None):
+        rst = self.api.recognition.identify(group_name=groupname,faceid=faceid)
+        candidate = rst['face']['candidate']
+        name = []
+        for c in candidate:
+            if c['confidence'] > 90:
+                name.append(c['person_name'])
+        return name
 
+        pass
     def create_group(self,groupname):
         self.api.group.create(group_name = groupname)
         self.api.group.add_person(group_name = groupname, person_name = self.faces.iterkeys())
