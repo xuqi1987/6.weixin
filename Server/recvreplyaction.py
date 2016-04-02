@@ -119,12 +119,10 @@ class Recv_reply_action():
             return u"我该叫什么?"
         elif step == 2 and lastdata.has_key(openid):
             content = data.find(Content).text
-            lastdata[content] =lastdata.pop(openid)
-            if self.face_api.add_person(content,faceid=faceid):
-                lastdata.clear()
+            faceid =lastdata.pop(openid)
+            if self.face_api.add_person(content,id=faceid):
                 return u"好的,我认识了%s"%content
             else:
-                lastdata.clear()
                 return u'我记不住~'
 
         else:

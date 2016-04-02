@@ -76,6 +76,7 @@ class Face():
             face = faces[0]['face_id']
 
         elif id != None:
+
             face = id
             pass
         else:
