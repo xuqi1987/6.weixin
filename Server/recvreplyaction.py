@@ -106,23 +106,21 @@ class Recv_reply_action():
 
     def _start_face_train(self,data,faceid = None,step=-1):
 
-        print '-' * 60
-        print data.find(PicUrl).text
-        print data.find(FromUserName).text
-        print data.find(CreateTime).text
-        print '-' * 60
+        # print '-' * 60
+        # print data.find(PicUrl).text
+        # print data.find(FromUserName).text
+        # print data.find(CreateTime).text
+        # print '-' * 60
         openid = data.find(FromUserName).text
-        content = data.find(Content).text
 
-
-        print openid
 
         if step == 0 :
             return u"请发照片:"
         elif step == 1 and faceid:
             self.trainface[openid] = faceid
             return u"我该叫什么?"
-        elif step == 2 and self.trainface.has_key(openid) and content != "":
+        elif step == 2 and self.trainface.has_key(openid):
+            content = data.find(Content).text
             self.trainface[content] =self.trainface.pop(openid)
             self.face_api.add_person(content,faceid=faceid)
             self.trainface.clear()
