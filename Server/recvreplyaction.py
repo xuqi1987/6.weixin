@@ -99,7 +99,7 @@ class Recv_reply_action():
         if len(faceid):
             t = self.f_xml.get(text)()
             # step 1.1 try to find some body
-            name = self.face_api.identify(groupname='family',faceid=faceid)
+            name = self.face_api.identify(groupname='family',url=picurl)
             # know this person
             if len(name) == 1 :
                 t = t % "%s,爱你哦~" % name[0]
