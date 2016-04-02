@@ -74,6 +74,7 @@ class Recv_reply_action():
         openid = data.find(FromUserName).text
         print '-'*60
         print openid
+        print self.trainface
         print '-'*60
         context = ''
         if self.trainface.has_key(openid):
