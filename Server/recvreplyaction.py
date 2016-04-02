@@ -106,8 +106,11 @@ class Recv_reply_action():
 
     def _start_face_train(self,data,faceid = None,step=-1):
 
+        print '-' * 60
         print data.find(PicUrl).text
-
+        print data.find(FromUserName).text
+        print data.find(CreateTime).text
+        print '-' * 60
         openid = data.find(FromUserName).text
         content = data.find(Content).text
 
