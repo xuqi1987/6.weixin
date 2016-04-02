@@ -93,7 +93,6 @@ class Recv_reply_action():
             t = self.f_xml.get(text)()
             # setp 2.save the face id ,and openid,return the question.
             t = t % self._start_face_train(data,faceid,step=1)
-
             pass
         else:
              # 调用_create_reply_xml_img
@@ -103,22 +102,28 @@ class Recv_reply_action():
         return t
 
     def _start_face_train(self,data,faceid = None,step=-1):
+
         openid = data.find('FromUserName').text
         content = data.find('Content').text
 
+        print x2j.xml2json(data)
+        print step
+        print faceid
+        print openid
+
         if step == 0 :
-            return "请发照片:"
+            return u"请发照片:"
         elif step == 1 and faceid:
             self.trainface[openid] = faceid
-            return "我该叫什么?"
+            return u"我该叫什么?"
         elif step == 2 and self.trainface.has_key(openid) and content != "":
             self.trainface[content] =self.trainface.pop(openid)
             self.face_api.add_person(content,faceid=faceid)
             self.trainface.clear()
-            return "我知道~我叫:%s"%content
+            return u"我知道~我叫:%s"%content
         else:
             self.trainface.clear()
-            return "我不理解"
+            return u"我不理解"
 
         pass
     def _do_face_check_reply(self,faceid):
