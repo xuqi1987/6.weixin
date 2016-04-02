@@ -51,35 +51,43 @@ class Face():
         for item in people:
                 yield item['person_name']
 
-    def add_person(self,name,url=None,img=None):
+    def add_person(self,name,url=None,img=None,faceid=None):
         facesinfo = {}
         faces = []
-        if url != None:
-            # 创建face
-            facesinfo = self.api.detection.detect(url = url)
-        elif img != None:
-            facesinfo =self.api.detection.detect(img = img)
+        if url != None or img != None:
+            if url != None:
+                # 创建face
+                facesinfo = self.api.detection.detect(url = url)
+            else:
+                facesinfo =self.api.detection.detect(img = img)
+
+            print facesinfo
+
+            if facesinfo.has_key("face") == False:
+                return False
+
+            faces = facesinfo['face']
+
+            if len(faces) <= 0:
+                print "can not find a face in the pic"
+                return False
+
+            face = faces[0]['face_id']
+
+        elif faceid != None:
+            face = faceid
         else:
             print "param error"
             return False
 
-        print facesinfo
-
-        if facesinfo.has_key("face") == False:
-            return False
-
-        faces = facesinfo['face']
-
-        if len(faces) > 0:
-            face = faces[0]
-            # 如果这个人没有了
-            if name not in self.get_person_list():
-                rst = self.api.person.create(
-                    person_name = name, face_id = face['face_id'])
-            # 如果有这个人
-            else:
-                rst = self.api.person.add_face(
-                    person_name = name, face_id = face['face_id'])
+        # 如果这个人没有了
+        if name not in self.get_person_list():
+            rst = self.api.person.create(
+                person_name = name, face_id = face)
+        # 如果有这个人
+        else:
+            rst = self.api.person.add_face(
+                person_name = name, face_id = face)
         return True
 
 

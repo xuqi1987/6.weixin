@@ -79,3 +79,9 @@ from facepp import API,File
 api = API(API_KEY, API_SECRET)
 
 api.detection.detect(img=File('/Users/xuqi/Documents/proj/6.weixin/Server/img/liudehua_1458996111.24.jpg'))
+
+dict = {"a" : "apple", "b" : "banana"}
+print dict
+dict2 = {"a" : "grape", "d" : "orange"}
+dict.update(dict2)
+print dict

@@ -27,6 +27,9 @@ class Recv_reply_action():
         self.type = self.xml_recv.find(MsgType).text
 
         self.face_api = Face()
+
+        self.trainface = {}
+        # {name:faceid}
         pass
 
     def g(self,param):
@@ -79,10 +82,12 @@ class Recv_reply_action():
         picurl = data.find(PicUrl).text
 
         faceid = self.face_api.checkface(picurl)
-        print faceid
+        # step 1.check pic,if it contains face
         if len(faceid):
             t = self.f_xml.get(text)()
-            t = t % self._do_face_check_reply(faceid)
+            # setp 2.save the face id ,and openid,return the question.
+            t = t % self._start_face_train(data,faceid,step=1)
+
             pass
         else:
              # 调用_create_reply_xml_img
@@ -91,28 +96,47 @@ class Recv_reply_action():
             pass
         return t
 
-    def _do_face_check_reply(self,faceid):
-        faceinfo = self.face_api.getface(faceid)['face_info'][0]['attribute']
-        age = faceinfo['age']['value']
+    def _start_face_train(self,data,faceid = None,step=-1):
+        openid = data.find('FromUserName').text
+        content = data.find('Content').text
 
-        gender = faceinfo['gender']['value']
-        race = faceinfo['race']['value']
-
-        name = ""
-        if (race != 'Asian'):
-            return "老外我不认识"
-        elif (age < 10 and gender =='Male') :
-            name = "小哥哥"
-        elif (age < 10 and gender != 'Male') :
-            name = "小姐姐"
-        elif (age < 40 and gender == "Male") :
-            name = "帅哥"
-        elif (age < 40 and gender != "Male"):
-            name = "美女"
+        if step == 0 :
+            return "请发照片:"
+        elif step == 1 and faceid:
+            self.trainface[openid] = faceid
+            return "我该叫什么?"
+        elif step == 2 and self.trainface.has_key(openid) and content != "":
+            self.trainface[content] =self.trainface.pop(openid)
+            self.face_api.add_person(content,faceid=faceid)
+            return "我知道~我叫:%s"%content
         else:
-            pass
+            self.trainface.clear()
+            return "我不理解"
 
-        return "这位%s是谁啊?看起来大概有%s岁" %  (name,age)
+        pass
+    def _do_face_check_reply(self,faceid):
+        #faceinfo = self.face_api.getface(faceid)['face_info'][0]['attribute']
+
+        # age = faceinfo['age']['value']
+        #
+        # gender = faceinfo['gender']['value']
+        # race = faceinfo['race']['value']
+        #
+        # name = ""
+        # if (race != 'Asian'):
+        #     return "老外我不认识"
+        # elif (age < 10 and gender =='Male') :
+        #     name = "小哥哥"
+        # elif (age < 10 and gender != 'Male') :
+        #     name = "小姐姐"
+        # elif (age < 40 and gender == "Male") :
+        #     name = "帅哥"
+        # elif (age < 40 and gender != "Male"):
+        #     name = "美女"
+        # else:
+        #     pass
+        #
+        # return "这位%s是谁啊?看起来大概有%s岁" %  (name,age)
         pass
 
 
