@@ -106,7 +106,7 @@ class Face():
         print 'identify start'
         rst = self.api.recognition.identify(group_name=groupname,url=url,async=False)
         print rst
-        candidate = rst['face']['candidate']
+        candidate = rst['face'][0]['candidate']
         name = []
         for c in candidate:
             if c['confidence'] > 90:
