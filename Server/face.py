@@ -104,7 +104,7 @@ class Face():
 
     def identify(self,groupname='family',faceid=None,url=None):
         print 'identify start'
-        rst = self.api.recognition.identify(group_name=groupname,url=url,async=True)
+        rst = self.api.recognition.identify(group_name=groupname,url=url,async=False)
         print rst
         candidate = rst['face']['candidate']
         name = []
