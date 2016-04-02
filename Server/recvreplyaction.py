@@ -91,6 +91,7 @@ class Recv_reply_action():
 
 
     def _do_image_reply(self,data):
+        print '_do_image_reply start'
         mediaid = data.find(MediaId).text
         picurl = data.find(PicUrl).text
 
@@ -100,7 +101,7 @@ class Recv_reply_action():
             t = self.f_xml.get(text)()
             # step 1.1 try to find some body
             name = self.face_api.identify(groupname='family',url=picurl)
-            print name
+            print len(name)
             # know this person
             if len(name) == 1 :
                 a = "%s,爱你哦~" % name[0]
@@ -120,6 +121,7 @@ class Recv_reply_action():
             t = self.f_xml.get(self.type)()
             t = t % mediaid
             pass
+        print '_do_image_reply end'
         return t
 
     def _start_face_train(self,data,faceid = None,step=-1):
