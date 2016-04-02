@@ -112,8 +112,9 @@ class Face():
         for c in candidate:
             print c['confidence']
             print c['person_name']
-            if c['confidence'] > 60:
+            if c['confidence'] > 50:
                 name.append(c['person_name'])
+
         print '-'*100
 
         print 'identify end : %s' % ''.join(name)
