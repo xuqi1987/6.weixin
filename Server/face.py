@@ -52,6 +52,7 @@ class Face():
                 yield item['person_name']
 
     def add_person(self,name,url=None,img=None,id=None):
+        print "add_person"
         facesinfo = {}
         faces = []
 
@@ -102,12 +103,15 @@ class Face():
         pass
 
     def identify(self,groupname='family',faceid=None,url=None):
+        print 'identify'
         rst = self.api.recognition.identify(group_name=groupname,faceid=faceid)
+        print rst
         candidate = rst['face']['candidate']
         name = []
         for c in candidate:
             if c['confidence'] > 90:
                 name.append(c['person_name'])
+        print name
         return name
 
         pass

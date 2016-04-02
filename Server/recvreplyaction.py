@@ -97,15 +97,16 @@ class Recv_reply_action():
         faceid = self.face_api.checkface(picurl)
         # step 1.check pic,if it contains face
         if len(faceid):
-
             t = self.f_xml.get(text)()
             # step 1.1 try to find some body
             name = self.face_api.identify(groupname='family',faceid=faceid)
             # know this person
             if len(name) == 1 :
                 t = t % "%s,爱你哦~" % name[0]
+                pass
             elif len(name) > 1:
                 t = t % "我分不清楚,但是你和%s好像~" %','.join(name)
+                pass
             # do not know this person
             else:
                 # setp 2.save the face id ,and openid,return the question.
