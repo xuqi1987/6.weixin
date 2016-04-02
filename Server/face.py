@@ -109,7 +109,7 @@ class Face():
         candidate = rst['face'][0]['candidate']
         name = []
         for c in candidate:
-            if c['confidence'] > 90:
+            if c['confidence'] > 60:
                 name.append(c['person_name'])
         print 'identify end : %s' % ''.join(name)
         return name
