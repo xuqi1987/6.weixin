@@ -72,6 +72,9 @@ class Recv_reply_action():
     def _do_text_reply(self,data):
         key = data.find(Content).text
         openid = data.find(FromUserName).text
+        print '-'*60
+        print openid
+        print '-'*60
         context = ''
         if self.trainface.has_key(openid):
             # 生成回复
@@ -106,13 +109,7 @@ class Recv_reply_action():
 
     def _start_face_train(self,data,faceid = None,step=-1):
 
-        # print '-' * 60
-        # print data.find(PicUrl).text
-        # print data.find(FromUserName).text
-        # print data.find(CreateTime).text
-        # print '-' * 60
         openid = data.find(FromUserName).text
-
 
         if step == 0 :
             return u"请发照片:"
