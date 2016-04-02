@@ -8,7 +8,7 @@ from xml2json import Xml2json as x2j
 import json
 from face import Face
 
-
+lastdata = {}
  # 用户处理用户的信息
 class Recv_reply_action():
     def __init__(self,data):
@@ -31,7 +31,7 @@ class Recv_reply_action():
 
         self.face_api = Face()
 
-        self.trainface = {}
+
         # {name:faceid}
         pass
 
@@ -74,10 +74,10 @@ class Recv_reply_action():
         openid = data.find(FromUserName).text
         print '-'*60
         print openid
-        print self.trainface
+        print lastdata
         print '-'*60
         context = ''
-        if self.trainface.has_key(openid):
+        if lastdata.has_key(openid):
             # 生成回复
             context = self._start_face_train(data=data,step=2)
         else:
@@ -115,16 +115,16 @@ class Recv_reply_action():
         if step == 0 :
             return u"请发照片:"
         elif step == 1 and faceid:
-            self.trainface[openid] = faceid
+            lastdata[openid] = faceid
             return u"我该叫什么?"
-        elif step == 2 and self.trainface.has_key(openid):
+        elif step == 2 and lastdata.has_key(openid):
             content = data.find(Content).text
-            self.trainface[content] =self.trainface.pop(openid)
+            lastdata[content] =lastdata.pop(openid)
             self.face_api.add_person(content,faceid=faceid)
-            self.trainface.clear()
+            lastdata.clear()
             return u"我知道~我叫:%s"%content
         else:
-            self.trainface.clear()
+            lastdata.clear()
             return u"我不理解"
 
         pass
