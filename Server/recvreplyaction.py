@@ -106,7 +106,7 @@ class Recv_reply_action():
         openid = data.find('FromUserName').text
         content = data.find('Content').text
 
-        print x2j.xml2json(data)
+        print data
         print step
         print faceid
         print openid
