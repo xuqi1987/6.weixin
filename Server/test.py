@@ -77,11 +77,12 @@ API_SECRET = '9SdqAcTYA273l5Nh1b71dD2RA82Fs8CQ'
 from facepp import API,File
 
 api = API(API_KEY, API_SECRET)
-
-api.detection.detect(img=File('/Users/xuqi/Documents/proj/6.weixin/Server/img/liudehua_1458996111.24.jpg'))
-
-dict = {"a" : "apple", "b" : "banana"}
-print dict
-dict2 = {"a" : "grape", "d" : "orange"}
-dict.update(dict2)
-print dict
+# rst = api.group.create(group_name = 'family')
+api.group.add_person(group_name = 'family',person_name='奶奶')
+# api.detection.detect(img=File('/Users/xuqi/Documents/proj/6.weixin/Server/img/liudehua_1458996111.24.jpg'))
+#
+# dict = {"a" : "apple", "b" : "banana"}
+# print dict
+# dict2 = {"a" : "grape", "d" : "orange"}
+# dict.update(dict2)
+# print dict

@@ -121,6 +121,8 @@ class Recv_reply_action():
             content = data.find(Content).text
             faceid =lastdata.pop(openid)
             if self.face_api.add_person(content,id=faceid):
+                self.face_api.add_person_2_group(content,'family')
+
                 return u"好的,我认识了%s"%content
             else:
                 return u'我记不住~'

@@ -93,6 +93,14 @@ class Face():
                 person_name = name, face_id = face)
         return True
 
+    def add_person_2_group(self,name,groupname='family'):
+        print 'add_person_2_group'
+        self.api.group.add_person(person_name=name,groupname=groupname)
+        print 'train group'
+        sessionid = self.api.train.identify(groupname)
+        print 'session id %s' %sessionid
+        pass
+
 
     def create_group(self,groupname):
         self.api.group.create(group_name = groupname)
