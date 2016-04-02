@@ -54,7 +54,7 @@ class Face():
     def add_person(self,name,url=None,img=None,id=None):
         facesinfo = {}
         faces = []
-        print "url=%s,img=%s,id=%s"%(url,img,id)
+
         if url != None or img != None:
             if url != None:
                 # 创建face
