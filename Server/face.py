@@ -96,9 +96,9 @@ class Face():
 
     def add_person_2_group(self,name,groupname='family'):
         print 'add_person_2_group'
-        self.api.group.add_person(person_name=name,groupname=groupname)
+        self.api.group.add_person(person_name=name,group_name=groupname)
         print 'train group'
-        sessionid = self.api.train.identify(groupname)
+        sessionid = self.api.train.identify(group_name = groupname)
         print 'session id %s' %sessionid
         pass
 
