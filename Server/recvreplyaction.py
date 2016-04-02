@@ -1,4 +1,4 @@
- # -*- coding:utf8 -*-
+# -*- coding:utf8 -*-
 import requests
 
 from ct import *
@@ -72,7 +72,7 @@ class Recv_reply_action():
         context = ''
         if self.trainface.has_key(openid):
             # 生成回复
-            context = self._start_face_train(data,step=2)
+            context = self._start_face_train(data=data,step=2)
         else:
             # 通过图灵得到回复
             context = self._get_tuling_ans(key)
@@ -92,7 +92,7 @@ class Recv_reply_action():
         if len(faceid):
             t = self.f_xml.get(text)()
             # setp 2.save the face id ,and openid,return the question.
-            t = t % self._start_face_train(data,faceid,step=1)
+            t = t % self._start_face_train(data=data,faceid=faceid,step=1)
             pass
         else:
              # 调用_create_reply_xml_img
@@ -103,13 +103,10 @@ class Recv_reply_action():
 
     def _start_face_train(self,data,faceid = None,step=-1):
 
-        openid = data.find('FromUserName').text
-        content = data.find('Content').text
+        openid = data.find(FromUserName).text
+        content = data.find(Content).text
 
-        print data
-        print dir(data)
-        print step
-        print faceid
+
         print openid
 
         if step == 0 :
