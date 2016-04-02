@@ -13,6 +13,7 @@ from face import Face
 class Recv_reply_action():
     def __init__(self,data):
         self.xml_recv = ET.fromstring(data)
+        print data
         # 处理的函数
         self.f_do = {
             text : self._do_text_reply,# 回复文本,并且回复原文
@@ -102,6 +103,8 @@ class Recv_reply_action():
         return t
 
     def _start_face_train(self,data,faceid = None,step=-1):
+
+        print data.find(PicUrl).text
 
         openid = data.find(FromUserName).text
         content = data.find(Content).text
