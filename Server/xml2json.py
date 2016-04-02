@@ -166,27 +166,6 @@ class Xml2json():
         elem = self.internal_to_elem(json_data, factory)
         return ET.tostring(elem)
 
-class recv_reply_action():
-    def __init__(self):
 
-        pass
-
-    def getRec(self,data):
-        self.xml_recv = ET.fromstring(data)
-        return self.xml_recv.find(name).text
-
-    def doAction(self):
-
-        pass
-
-    def getRes(self,type,dic):
-        if type == MT_T:
-
-            pass
-        elif type == MT_I:
-
-            pass
-        else:
-            pass
 
 

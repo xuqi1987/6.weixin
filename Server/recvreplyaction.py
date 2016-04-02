@@ -107,6 +107,7 @@ class Recv_reply_action():
         content = data.find('Content').text
 
         print data
+        print dir(data)
         print step
         print faceid
         print openid
