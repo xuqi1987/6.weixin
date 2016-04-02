@@ -13,7 +13,9 @@ from face import Face
 class Recv_reply_action():
     def __init__(self,data):
         self.xml_recv = ET.fromstring(data)
+        print "-" * 60
         print data
+        print "-" * 60
         # 处理的函数
         self.f_do = {
             text : self._do_text_reply,# 回复文本,并且回复原文
