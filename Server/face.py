@@ -53,17 +53,23 @@ class Face():
 
     def add_person(self,name,url):
 
+        ret = False
         # 创建face
-        face = self.api.detection.detect(url = url)['face'][0]
-        # 如果这个人没有了
-        if name not in self.get_person_list():
-            rst = self.api.person.create(
-                person_name = name, face_id = face['face_id'])
-        # 如果有这个人
-        else:
-            rst = self.api.person.add_face(
-                person_name = name, face_id = face['face_id'])
+        faces = self.api.detection.detect(url = url)['face']
+        if len(faces) > 0:
+            face = faces[0]
 
+            ret = True
+            # 如果这个人没有了
+            if name not in self.get_person_list():
+                rst = self.api.person.create(
+                    person_name = name, face_id = face['face_id'])
+            # 如果有这个人
+            else:
+                rst = self.api.person.add_face(
+                    person_name = name, face_id = face['face_id'])
+        return ret
+    
     def add_person(self,name,img):
 
         # 创建face

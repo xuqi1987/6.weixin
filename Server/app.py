@@ -43,8 +43,12 @@ def addface():
         else:
             path = os.getcwd() +"/img/" + imagefile.filename
             imagefile.save(path)
-            face_api.add_person(name,img=File(path=path))
+            ret = face_api.add_person(name,img=File(path=path))
+            if ret:
+                flash(u"添加成功")
+            else:
+                flash(u"添加失败")
     return render_template("index.html")
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0",port=80)
+    app.run(host="0.0.0.0",port=80,debug=True)
