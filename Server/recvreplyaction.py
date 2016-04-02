@@ -68,8 +68,14 @@ class Recv_reply_action():
     # 回复Text
     def _do_text_reply(self,data):
         key = data.find(Content).text
-        # 通过图灵得到回复
-        context = self._get_tuling_ans(key)
+        openid = data.find(FromUserName).text
+        context = ''
+        if self.trainface.has_key(openid):
+            # 生成回复
+            context = self._start_face_train(data,step=2)
+        else:
+            # 通过图灵得到回复
+            context = self._get_tuling_ans(key)
         #  调用_create_reply_xml_text 生成文本回复模版
         t = self.f_xml.get(self.type)()
         # 格式化消息
@@ -108,6 +114,7 @@ class Recv_reply_action():
         elif step == 2 and self.trainface.has_key(openid) and content != "":
             self.trainface[content] =self.trainface.pop(openid)
             self.face_api.add_person(content,faceid=faceid)
+            self.trainface.clear()
             return "我知道~我叫:%s"%content
         else:
             self.trainface.clear()
