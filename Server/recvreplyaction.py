@@ -100,12 +100,15 @@ class Recv_reply_action():
             t = self.f_xml.get(text)()
             # step 1.1 try to find some body
             name = self.face_api.identify(groupname='family',url=picurl)
+            print name
             # know this person
             if len(name) == 1 :
-                t = t % "%s,爱你哦~" % name[0]
+                a = "%s,爱你哦~" % name[0]
+                t = t % a
                 pass
             elif len(name) > 1:
-                t = t % "我分不清楚,但是你和%s好像~" %','.join(name)
+                a = "我分不清楚,但是你和%s好像~" %','.join(name)
+                t = t % a
                 pass
             # do not know this person
             else:
