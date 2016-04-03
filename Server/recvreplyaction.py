@@ -95,27 +95,30 @@ class Recv_reply_action():
         mediaid = data.find(MediaId).text
         picurl = data.find(PicUrl).text
 
+        # 检测照片中是否有faceid
         faceid = self.face_api.checkface(picurl)
-        # step 1.check pic,if it contains face
+        # Step 1 如果照片中有face,那么
         if len(faceid):
             t = self.f_xml.get(text)()
-            # step 1.1 try to find some body
+            # step 1.1 检测是否是已经认识的人
             name = self.face_api.identify(groupname='family',url=picurl)
 
-            # know this person
+            # 如果是已经认识的人
             if len(name) == 1 :
                 t = t % u"%s,爱你哦~" % name[0]
                 print t
                 pass
+            # 如果和认识的多个人相识
             elif len(name) > 1:
                 t = t % u"我分不清楚,但是你和%s好像~" %','.join(name)
                 print t
                 pass
-            # do not know this person
+            # 如果是不认识的人
             else:
-                # setp 2.save the face id ,and openid,return the question.
+                # setp 2 保存这个人的脸,并且学习,返回问题.
                 t = t % self._start_face_train(data=data,faceid=faceid,step=1)
                 pass
+
         else:
              # 调用_create_reply_xml_img
             t = self.f_xml.get(self.type)()
@@ -130,13 +133,17 @@ class Recv_reply_action():
 
         if step == 0 :
             return u"请发照片:"
+        # 保存faceid
         elif step == 1 and faceid:
             lastdata[openid] = faceid
             return u"我该叫什么?"
+        # 判读上次是否是追加人脸
         elif step == 2 and lastdata.has_key(openid):
             content = data.find(Content).text
             faceid =lastdata.pop(openid)
+            # 追加人脸
             if self.face_api.add_person(content,id=faceid):
+                # 学习
                 self.face_api.add_person_2_group(content,'family')
                 return u"好的,我认识了%s"%content
             else:

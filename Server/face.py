@@ -33,6 +33,7 @@ class Face():
         self.faces = []
         pass
 
+    # 检测人脸,如果有人脸,返回faceid
     def checkface(self,url):
         face = self.api.detection.detect(url = url)['face']
 
@@ -51,6 +52,7 @@ class Face():
         for item in people:
                 yield item['person_name']
 
+    # 添加人脸
     def add_person(self,name,url=None,img=None,id=None):
         print "add_person"
         facesinfo = {}
@@ -94,14 +96,17 @@ class Face():
                 person_name = name, face_id = face)
         return True
 
+    # 将人脸添加到group
     def add_person_2_group(self,name,groupname='family'):
         print 'add_person_2_group'
         self.api.group.add_person(person_name=name,group_name=groupname)
         print 'train group'
+        # 训练group
         sessionid = self.api.train.identify(group_name = groupname)
         print 'session id %s' %sessionid
         pass
 
+    # 识别人脸,如果candidate > 50,返回person的名称
     def identify(self,groupname='family',faceid=None,url=None):
         print 'identify start'
         rst = self.api.recognition.identify(group_name=groupname,url=url,async=False)
