@@ -270,3 +270,155 @@ MediaId|	是	|通过素材管理接口上传多媒体文件，得到的id。
 
 	I believe that through our mutual understanding between each other, we will  cooperation very well, and can become good friends.
 
+#### 人脸识别
+运行效果
+
+![](http://cl.ly/0E382o0s0Y2d/Image%202016-04-03%20at%2010.26.21%20%E4%B8%8A%E5%8D%88.png)
+
+当照片中有检测到人脸时候，先检测是否时已经认识的人脸，如果认识了，则自动回复人脸，如果是不认识的人脸，自动回复“我该叫什么”，根据回复，训练人脸。下一次可以自动识别。
+
+
+```	
+print '_do_image_reply start'
+mediaid = data.find(MediaId).text
+picurl = data.find(PicUrl).text
+
+# 检测照片中是否有faceid
+faceid = self.face_api.checkface(picurl)
+# Step 1 如果照片中有face,那么
+if len(faceid):
+    t = self.f_xml.get(text)()
+    # step 1.1 检测是否是已经认识的人
+    name = self.face_api.identify(groupname='family',url=picurl)
+
+    # 如果是已经认识的人
+    if len(name) == 1 :
+        t = t % u"%s,爱你哦~" % name[0]
+        print t
+        pass
+    # 如果和认识的多个人相识
+    elif len(name) > 1:
+        t = t % u"我分不清楚,但是你和%s好像~" %','.join(name)
+        print t
+        pass
+    # 如果是不认识的人
+    else:
+        # setp 2 保存这个人的脸,并且学习,返回问题.
+        t = t % self._start_face_train(data=data,faceid=faceid,step=1)
+        pass
+
+else:
+     # 调用_create_reply_xml_img
+    t = self.f_xml.get(self.type)()
+    t = t % mediaid
+    pass
+print '_do_image_reply end %s' % t
+return t
+
+```
+
+```
+openid = data.find(FromUserName).text
+
+if step == 0 :
+    return u"请发照片:"
+# 保存faceid
+elif step == 1 and faceid:
+    lastdata[openid] = faceid
+    return u"我该叫什么?"
+# 判读上次是否是追加人脸
+elif step == 2 and lastdata.has_key(openid):
+    content = data.find(Content).text
+    faceid =lastdata.pop(openid)
+    # 追加人脸
+    if self.face_api.add_person(content,id=faceid):
+        # 学习
+        self.face_api.add_person_2_group(content,'family')
+        return u"好的,我认识了%s"%content
+    else:
+        return u'我记不住~'
+
+else:
+    lastdata.clear()
+    return u"我不理解"
+
+pass
+```
+
+```
+# 添加人脸
+def add_person(self,name,url=None,img=None,id=None):
+    print "add_person"
+    facesinfo = {}
+    faces = []
+
+    if url != None or img != None:
+        if url != None:
+            # 创建face
+            facesinfo = self.api.detection.detect(url = url)
+        else:
+            facesinfo =self.api.detection.detect(img = img)
+
+        print facesinfo
+
+        if facesinfo.has_key("face") == False:
+            return False
+
+        faces = facesinfo['face']
+
+        if len(faces) <= 0:
+            print "can not find a face in the pic"
+            return False
+
+        face = faces[0]['face_id']
+
+    elif id != None:
+
+        face = id
+        pass
+    else:
+        print "param error"
+        return False
+
+    # 如果这个人没有了
+    if name not in self.get_person_list():
+        rst = self.api.person.create(
+            person_name = name, face_id = face)
+    # 如果有这个人
+    else:
+        rst = self.api.person.add_face(
+            person_name = name, face_id = face)
+    return True
+    
+# 将人脸添加到group
+def add_person_2_group(self,name,groupname='family'):
+    print 'add_person_2_group'
+    self.api.group.add_person(person_name=name,group_name=groupname)
+    print 'train group'
+    # 训练group
+    sessionid = self.api.train.identify(group_name = groupname)
+    print 'session id %s' %sessionid
+    pass
+    
+# 识别人脸,如果candidate > 50,返回person的名称
+def identify(self,groupname='family',faceid=None,url=None):
+    print 'identify start'
+    rst = self.api.recognition.identify(group_name=groupname,url=url,async=False)
+    print rst
+    candidate = rst['face'][0]['candidate']
+    name = []
+    print '-'*100
+    for c in candidate:
+        print c['confidence']
+        print c['person_name']
+        if c['confidence'] > 50:
+            name.append(c['person_name'])
+
+    print '-'*100
+
+    print 'identify end : %s' % ''.join(name)
+    return name
+
+    pass
+```
+
