@@ -26,8 +26,8 @@ def wechat():
 
             resp = make_response(replydata)
             resp.content_type = 'application/xml'
-    except Exception as e:
-        resp =  make_response(e.message)
+    except Exception,X:
+        resp =  make_response(X)
     finally:
         return resp
 
@@ -49,6 +49,7 @@ def addface():
             else:
                 flash(u"添加失败")
     return render_template("index.html")
+
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0",port=80,debug=False)

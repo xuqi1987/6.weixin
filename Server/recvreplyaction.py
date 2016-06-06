@@ -155,28 +155,28 @@ class Recv_reply_action():
 
         pass
     def _do_face_check_reply(self,faceid):
-        #faceinfo = self.face_api.getface(faceid)['face_info'][0]['attribute']
+        faceinfo = self.face_api.getface(faceid)['face_info'][0]['attribute']
 
-        # age = faceinfo['age']['value']
-        #
-        # gender = faceinfo['gender']['value']
-        # race = faceinfo['race']['value']
-        #
-        # name = ""
-        # if (race != 'Asian'):
-        #     return "老外我不认识"
-        # elif (age < 10 and gender =='Male') :
-        #     name = "小哥哥"
-        # elif (age < 10 and gender != 'Male') :
-        #     name = "小姐姐"
-        # elif (age < 40 and gender == "Male") :
-        #     name = "帅哥"
-        # elif (age < 40 and gender != "Male"):
-        #     name = "美女"
-        # else:
-        #     pass
-        #
-        # return "这位%s是谁啊?看起来大概有%s岁" %  (name,age)
+        age = faceinfo['age']['value']
+
+        gender = faceinfo['gender']['value']
+        race = faceinfo['race']['value']
+
+        name = ""
+        if (race != 'Asian'):
+            return "老外我不认识"
+        elif (age < 10 and gender =='Male') :
+            name = "小哥哥"
+        elif (age < 10 and gender != 'Male') :
+            name = "小姐姐"
+        elif (age < 40 and gender == "Male") :
+            name = "帅哥"
+        elif (age < 40 and gender != "Male"):
+            name = "美女"
+        else:
+            pass
+
+        return "这位%s是谁啊?看起来大概有%s岁" %  (name,age)
         pass
 
 

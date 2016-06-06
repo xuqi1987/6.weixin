@@ -110,7 +110,7 @@ class File(object):
         if self.path != None:
             return os.path.basename(self.path)
         else:
-            return "test.jpg"
+            return "test.jpg') }}"
 
 class APIError(Exception):
     code = None
