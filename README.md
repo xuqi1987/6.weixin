@@ -1,4 +1,4 @@
-# 6.weixin
+#weixin
 
 **参考：**
 
